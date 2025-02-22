@@ -3,6 +3,17 @@ const cors = require('cors');
 require('dotenv').config();
 require('./db'); // Connect to MongoDB
 
+const { Client } = require("pg");
+
+const pgClient = new Client({
+  connectionString: process.env.PG_URI, // Use environment variable
+  ssl: { rejectUnauthorized: false }   // Required for Neon.tech
+});
+
+pgClient.connect()
+  .then(() => console.log("✅ PostgreSQL Connected!"))
+  .catch(err => console.error("❌ PostgreSQL Connection Error:", err));
+
 const app = express();
 app.use(express.json());
 app.use(cors());
